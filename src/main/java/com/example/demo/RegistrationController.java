@@ -7,13 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class RegistrationController {
-
-
     @Autowired
     private RegistrationService service;
     @PostMapping("/registerUser")
-    @CrossOrigin(origins = "http://localhost:4200")
     public User registerUser(@RequestBody User user) throws Exception {
         String tempEmailId = user.getEmailId();
         User userObj =null;
@@ -33,7 +31,6 @@ public class RegistrationController {
         return userObj;
     }
     @PostMapping("/login")
-    @CrossOrigin(origins = "http://localhost:4200")
     public User  loginUser(@RequestBody User user) throws Exception {
         String tempEmailId =user.getEmailId();
         String tempPassword = user.getPassword();
