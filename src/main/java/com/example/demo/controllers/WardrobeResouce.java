@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.controllers;
 
 import com.example.demo.model.Wardrobe;
 import com.example.demo.service.WardrobeService;
@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/wardrobe")
-@CrossOrigin("http://localhost:4200")
 public class WardrobeResouce {
     private final WardrobeService wardrobeService;
 
@@ -58,3 +57,4 @@ public class WardrobeResouce {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
+it

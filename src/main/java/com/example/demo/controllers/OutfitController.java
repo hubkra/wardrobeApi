@@ -1,6 +1,7 @@
-package com.example.demo;
+package com.example.demo.controllers;
 
 import com.example.demo.model.Outfit;
+import com.example.demo.model.Wardrobe;
 import com.example.demo.service.OutfitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,9 +21,20 @@ public class OutfitController {
     }
 
     @PostMapping
-    public ResponseEntity<Outfit> createOutfit(@RequestBody Outfit outfit) {
-        Outfit createdOutfit = outfitService.createOutfit(outfit);
-        return new ResponseEntity<>(createdOutfit, HttpStatus.CREATED);
+    public ResponseEntity<String> createOutfit(@RequestBody List<Wardrobe> wardrobeItems) {
+        System.out.println("Received wardrobeItems: " + wardrobeItems);
+
+        // Tworzenie stroju i dodawanie elementów garderoby...
+        Outfit newOutfit = new Outfit();
+        for (Wardrobe wardrobeItem : wardrobeItems) {
+            newOutfit.addWardrobeItem(wardrobeItem);
+        }
+
+        System.out.println("Created newOutfit: " + newOutfit);
+
+        outfitService.createOutfit(newOutfit);
+
+        return ResponseEntity.ok("Stworzono nowy strój.");
     }
 
     @GetMapping
