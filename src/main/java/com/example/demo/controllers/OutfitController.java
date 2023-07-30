@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/outfits")
@@ -21,10 +22,15 @@ public class OutfitController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createOutfit(@RequestBody List<Wardrobe> wardrobeItems) {
+    public ResponseEntity<String> createOutfit(@RequestBody Map<String, List<Wardrobe>> request) {
+        List<Wardrobe> wardrobeItems = request.get("wardrobeItems");
+        if (wardrobeItems == null || wardrobeItems.isEmpty()) {
+            return ResponseEntity.badRequest().body("No wardrobe items provided.");
+        }
+
         System.out.println("Received wardrobeItems: " + wardrobeItems);
 
-        // Tworzenie stroju i dodawanie elementów garderoby...
+        // Create the outfit using the wardrobe items
         Outfit newOutfit = new Outfit();
         for (Wardrobe wardrobeItem : wardrobeItems) {
             newOutfit.addWardrobeItem(wardrobeItem);

@@ -57,4 +57,3 @@ public class WardrobeResouce {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
-it
