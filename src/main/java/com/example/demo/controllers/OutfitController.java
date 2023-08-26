@@ -38,6 +38,8 @@ public class OutfitController {
             newOutfit.addWardrobeItem(wardrobeItem);
         }
 
+        newOutfit.setName(name);
+
         System.out.println("Created newOutfit: " + newOutfit);
 
         outfitService.createOutfit(newOutfit);
