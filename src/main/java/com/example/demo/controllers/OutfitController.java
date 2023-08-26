@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.dto.CreateOutfitRequest;
 import com.example.demo.model.Outfit;
 import com.example.demo.model.Wardrobe;
 import com.example.demo.service.OutfitService;
@@ -22,8 +23,9 @@ public class OutfitController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createOutfit(@RequestBody Map<String, List<Wardrobe>> request) {
-        List<Wardrobe> wardrobeItems = request.get("wardrobeItems");
+    public ResponseEntity<String> createOutfit(@RequestBody CreateOutfitRequest request) {
+        List<Wardrobe> wardrobeItems = request.getWardrobeItems();
+        String name = request.getName();
         if (wardrobeItems == null || wardrobeItems.isEmpty()) {
             return ResponseEntity.badRequest().body("No wardrobe items provided.");
         }
