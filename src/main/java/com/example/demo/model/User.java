@@ -12,6 +12,10 @@ public class User {
     private String userName;
     private String password;
 
+    @Lob
+    private byte[] profilePicture;
+
+
     public User(){}
 
     public User(int id, String emailId, String userName, String password) {
@@ -19,6 +23,14 @@ public class User {
         this.emailId = emailId;
         this.userName = userName;
         this.password = password;
+    }
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public int getId() {
