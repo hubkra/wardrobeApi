@@ -35,4 +35,41 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Błąd podczas przesyłania zdjęcia.");
         }
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateUser(
+            @RequestParam String userEmailId,
+            @RequestBody User updatedUser
+    ) {
+        try {
+            User user = userRepository.findByEmailId(userEmailId);
+
+            if (user != null) {
+                user.setPassword(updatedUser.getPassword());
+                user.setEmailId(updatedUser.getEmailId());
+
+                userRepository.save(user);
+
+                return ResponseEntity.status(HttpStatus.OK).body("Dane użytkownika zostały zaktualizowane.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Użytkownik o podanym adresie e-mail nie istnieje.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Błąd podczas aktualizacji danych użytkownika.");
+        }
+    }
+    @GetMapping("/{userEmailId}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String userEmailId) {
+        try {
+            User user = userRepository.findByEmailId(userEmailId);
+
+            if (user != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(user);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }
