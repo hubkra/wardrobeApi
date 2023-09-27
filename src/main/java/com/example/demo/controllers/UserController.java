@@ -36,17 +36,24 @@ public class UserController {
         }
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{userEmailId}")
     public ResponseEntity<String> updateUser(
-            @RequestParam String userEmailId,
-            @RequestBody User updatedUser
+            @PathVariable String userEmailId,
+            @RequestBody User updateUserRequest
     ) {
         try {
             User user = userRepository.findByEmailId(userEmailId);
 
             if (user != null) {
-                user.setPassword(updatedUser.getPassword());
-                user.setEmailId(updatedUser.getEmailId());
+                if (updateUserRequest.getPassword() != null) {
+                    user.setPassword(updateUserRequest.getPassword());
+                }
+                if (updateUserRequest.getEmailId() != null) {
+                    user.setEmailId(updateUserRequest.getEmailId());
+                }
+                if (updateUserRequest.getUserName() != null) {
+                    user.setUserName(updateUserRequest.getUserName());
+                }
 
                 userRepository.save(user);
 
