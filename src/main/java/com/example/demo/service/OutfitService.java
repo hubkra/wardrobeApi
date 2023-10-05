@@ -17,8 +17,8 @@ public class OutfitService {
         this.outfitRepository = outfitRepository;
     }
 
-    public Outfit createOutfit(Outfit outfit) {
-        return outfitRepository.save(outfit);
+    public void createOutfit(Outfit outfit) {
+        outfitRepository.save(outfit);
     }
 
     public List<Outfit> getAllOutfits() {
