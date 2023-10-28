@@ -8,13 +8,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
-import java.util.logging.Filter;
 
 @SpringBootApplication
-public class DemoApplication {
+public class WardrobeApi {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(WardrobeApi.class, args);
 	}
 
 
