@@ -4,8 +4,7 @@ import com.example.demo.model.User;
 import com.example.demo.service.RegistrationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,7 +23,8 @@ public class RegistrationController {
             {
                 throw new Exception("Uzytkownik z takim emailem "+tempEmailId+" juz istnieje");
             }
-            userObj= service.saveUser(user);
+            user.hashPassword();
+            userObj = service.saveUser(user);
 
         }
         if(userObj == null){
@@ -33,20 +33,22 @@ public class RegistrationController {
         return userObj;
     }
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User user) {
-        try {
-            String tempEmailId = user.getEmailId();
-            String tempPassword = user.getPassword();
+    public User  loginUser(@RequestBody User user) throws Exception {
+        String tempEmailId =user.getEmailId();
+        String tempPassword = user.getPassword();
+        User userObj =null;
+        if(tempEmailId !=null && tempPassword !=null)
+        {
+            userObj=  service.fetchUserByEmailIdAndPassword(tempEmailId, tempPassword);
 
-            User userObj = service.fetchUserByEmailId(tempEmailId);
-
-            if (userObj != null && userObj.checkPassword(tempPassword)) {
-                return ResponseEntity.status(HttpStatus.OK).body("Zalogowano pomyślnie.");
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Błędne dane logowania.");
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            if (passwordEncoder.matches(tempPassword, userObj.getPassword())) {
+                return userObj;
             }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Błąd podczas logowania.");
         }
+        if(userObj == null){
+            throw new Exception("Niezgodne dane!");
+        }
+        return userObj;
     }
 }

@@ -6,6 +6,8 @@ import javax.persistence.*;
 
 @Entity
 public class User {
+
+    private String hashedPassword;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
@@ -64,12 +66,19 @@ public class User {
     }
 
     public void setPassword(String password) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.password = passwordEncoder.encode(password);
+        this.password = password;
     }
 
-    public boolean checkPassword(String rawPassword) {
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
+    public void hashPassword() {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder.matches(rawPassword, this.password);
+        this.hashedPassword = passwordEncoder.encode(this.password);
     }
 }
